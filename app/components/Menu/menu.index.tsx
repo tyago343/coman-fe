@@ -1,7 +1,7 @@
-import { Link } from "@remix-run/react";
 import React, { useState } from "react";
+import MenuItem from "./menu.item";
 
-interface MenuItem {
+export interface MenuItem {
   label: string;
   link: string;
 }
@@ -15,10 +15,6 @@ const Menu: React.FC<MenuProps> = ({ items }) => {
 
   const handleClick = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleLinkClick = () => {
-    setIsOpen(false);
   };
 
   const handleOutsideClick = (event: React.MouseEvent<HTMLOListElement>) => {
@@ -55,11 +51,7 @@ const Menu: React.FC<MenuProps> = ({ items }) => {
       </div>
       <ol className={`absolute bg-gray-100 min-w-[200px] transition-all duration-300  border-b-[.5px] border-black ${isOpen ? "top-16" : "bottom-[1000rem]"}`} onClick={handleOutsideClick}>
         {items.map((item, index) => (
-          <li key={index} className="pl-4 py-1 border-[.5px] border-black border-b-0 last:border-b-0">
-            <Link to={item.link} onClick={handleLinkClick}>
-              {item.label}
-            </Link>
-          </li>
+          <MenuItem key={index} {...item} />
         ))}
       </ol>
     </div>
