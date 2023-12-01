@@ -10,7 +10,7 @@ const Header: React.FC<HeaderProps> = ({ title = "Default title" }) => {
     <div className="w-[--site-max-width] m-auto my-0 justify-between flex items-center bg-gray-100 px-8">
       <Menu items={[
         { label: "Home", link: "/" },
-        { label: "About", link: "/about" },
+        { label: "Add book", link: "/book/create" },
         { label: "Contact", link: "/contact" },
       ]} />
       <h1>{title}</h1>
