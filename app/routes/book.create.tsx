@@ -1,10 +1,9 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { Form } from "@remix-run/react";
 import { getBaseURL } from "../api";
-export async function action({
-  request,
-}: ActionFunctionArgs) {
-  debugger
+export async function action({ request }: ActionFunctionArgs) {
+  debugger;
   const formData = await request.formData();
   const body = Object.fromEntries(formData.entries());
   const newBook = await fetch(`${getBaseURL()}book`, {
@@ -19,42 +18,92 @@ export async function action({
 }
 export default function BookCreate() {
   return (
-    <div>
+    <div className="w-full max-w-xs m-auto py-4">
       <h1>Create a new book</h1>
-      <Form method="post">
-        <label htmlFor="title" className="text-base block text-gray-300 translate[1.25rem, -2,5rem] duration-500 pointer-events-none">Title</label>
-        <input
-          type="text"
-          name="title"
-          className="px-5 border-black border-[1px] border-solid rounded-sm duration-[250ms] focus:outline-none focus:border-t-[rgba(0,0,0,0.1)]"
-        />
-        <label htmlFor="synopsis" className="text-base block text-gray-300 translate[1.25rem, -2,5rem] duration-500 pointer-events-none peer-focus:-translate-y-20">synopsis</label>
-        <input
-          type="text"
-          name="synopsis"
-          className="px-5 border-black border-[1px] border-solid rounded-sm duration-[250ms] focus:outline-none focus:border-t-[rgba(0,0,0,0.1)]"
-        />
-        <label htmlFor="publishedDate" className="text-base block text-gray-300 translate[1.25rem, -2,5rem] duration-500 pointer-events-none">release date</label>
-        <input
-          type="text"
-          name="publishedDate"
-          className="px-5 border-black border-[1px] border-solid rounded-sm duration-[250ms] focus:outline-none focus:border-t-[rgba(0,0,0,0.1)]"
-        />
-        <label htmlFor="price" className="text-base block text-gray-300 translate[1.25rem, -2,5rem] duration-500 pointer-events-none">price</label>
-        <input
-          type="text"
-          name="price"
-          className="px-5 border-black border-[1px] border-solid rounded-sm duration-[250ms] focus:outline-none focus:border-t-[rgba(0,0,0,0.1)]"
-        />
-        <label htmlFor="author" className="text-base block text-gray-300 translate[1.25rem, -2,5rem] duration-500 pointer-events-none">author</label>
-        <input
-          type="text"
-          name="author"
-          className="px-5 border-black border-[1px] border-solid rounded-sm duration-[250ms] focus:outline-none focus:border-t-[rgba(0,0,0,0.1)]"
-        />
-        <div>
-          <button>Cancel</button>
-          <button type="submit">Create</button>
+      <Form
+        method="post"
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      >
+        <div className="mb-6">
+          <label
+            htmlFor="title"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Title
+          </label>
+          <input
+            type="text"
+            name="title"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Title"
+          />
+        </div>
+        <div className="mb-6">
+          <label
+            htmlFor="synopsis"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Synopsis
+          </label>
+          <input
+            type="text"
+            name="synopsis"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Synopsis"
+          />
+        </div>
+        <div className="mb-6">
+          <label
+            htmlFor="publishedDate"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Release date
+          </label>
+          <input
+            type="text"
+            name="publishedDate"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Release date"
+          />
+        </div>
+        <div className="mb-6">
+          <label
+            htmlFor="price"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Price
+          </label>
+          <input
+            type="text"
+            placeholder="Price"
+            name="price"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="mb-6">
+          <label
+            htmlFor="author"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Author
+          </label>
+          <input
+            type="text"
+            name="author"
+            placeholder="Author"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Create
+          </button>
         </div>
       </Form>
     </div>
