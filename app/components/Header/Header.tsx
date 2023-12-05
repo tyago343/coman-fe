@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "@remix-run/react";
 
 const Header = () => {
   return (
@@ -28,16 +28,16 @@ const Header = () => {
                 ></path>
               </svg>
             </button>
-            <a href="https://flowbite.com" className="flex ms-2 md:me-24">
+            <Link to="/" className="flex ms-2 md:me-24">
               <img
                 src="https://flowbite.com/docs/images/logo.svg"
                 className="h-8 me-3"
                 alt="FlowBite Logo"
               />
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                Flowbite
+                Amazon - Bookshop
               </span>
-            </a>
+            </Link>
           </div>
           <div className="flex items-center">
             <div className="flex items-center ms-3">
@@ -52,7 +52,7 @@ const Header = () => {
                   <img
                     className="w-8 h-8 rounded-full"
                     src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                    alt="user photo"
+                    alt="user profile"
                   />
                 </button>
               </div>
@@ -76,40 +76,40 @@ const Header = () => {
                 </div>
                 <ul className="py-1" role="none">
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="/"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                       role="menuitem"
                     >
                       Dashboard
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="/"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                       role="menuitem"
                     >
                       Settings
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="/"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                       role="menuitem"
                     >
                       Earnings
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="/"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                       role="menuitem"
                     >
                       Sign out
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
