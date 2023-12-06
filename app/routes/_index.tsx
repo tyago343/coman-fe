@@ -2,6 +2,7 @@ import { json, type MetaFunction } from "@remix-run/node";
 import { getBaseURL } from "../api";
 import { useLoaderData } from "@remix-run/react";
 import Card from "../components/Card/Card";
+import { useEffect, useState } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,11 +12,23 @@ export const meta: MetaFunction = () => {
 };
 export async function loader() {
   const books = await fetch(`${getBaseURL()}book`);
-  return json(await books.json());
+  const authors = await fetch(`${getBaseURL()}author`);
+
+  return json({ books: await books.json(), authors: await authors.json() });
 }
 
 export default function Index() {
-  const books = useLoaderData<typeof loader>();
+  const { books, authors } = useLoaderData<typeof loader>();
+  const [selectedAuthor, setSelectedAuthor] = useState("");
+  const [filteredBooks, setFilteredBooks] = useState(books);
+  useEffect(() => {
+    if (selectedAuthor !== "") {
+      const newFilteredBooks = books.filter(
+        (book: any) => book.author.id === selectedAuthor
+      );
+      setFilteredBooks(newFilteredBooks);
+    }
+  }, [selectedAuthor, books]);
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
       <h1 className="text-center font-bold text-4xl underline text-white">
@@ -23,15 +36,24 @@ export default function Index() {
       </h1>
       <section></section>
       <div className="flex items-center justify-center py-4 md:py-8 flex-wrap">
-        <button
-          type="button"
-          className="text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800 mx-auto"
-        >
-          All genres
-        </button>
+        {authors.map((author: any) => (
+          <button
+            key={author.id}
+            type="button"
+            onClick={() => setSelectedAuthor(author.id)}
+            className={`mx-5 focus:ring-4 focus:outline-none text-base px-5 py-2.5 rounded-full ${
+              author.id === selectedAuthor
+                ? "text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700  focus:ring-blue-300 font-medium text-center mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800 "
+                : "text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white  focus:ring-gray-300  font-medium text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
+            }`}
+          >
+            {author.name}
+          </button>
+        ))}
       </div>
+
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-auto">
-        {books.map((book: any) => (
+        {filteredBooks.map((book: any) => (
           <div key={book.id}>
             <Card book={book} />
           </div>
