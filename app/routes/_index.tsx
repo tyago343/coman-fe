@@ -41,10 +41,10 @@ export default function Index() {
             key={author.id}
             type="button"
             onClick={() => setSelectedAuthor(author.id)}
-            className={`mx-5 focus:ring-4 focus:outline-none text-base px-5 py-2.5 rounded-full ${
+            className={`mx-5 focus:ring-4 focus:outline-none text-base px-5 py-2.5 rounded-full dark:bg-gray-900 ${
               author.id === selectedAuthor
-                ? "text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700  focus:ring-blue-300 font-medium text-center mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800 "
-                : "text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white  focus:ring-gray-300  font-medium text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
+                ? "text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700  focus:ring-blue-300 font-medium text-center mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 "
+                : "text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900  dark:hover:border-gray-700 bg-white  focus:ring-gray-300  font-medium text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
             }`}
           >
             {author.name}
@@ -53,7 +53,7 @@ export default function Index() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 m-auto">
-        {filteredBooks.map((book: any) => (
+        {filteredBooks?.map((book: any) => (
           <div key={book.id}>
             <Card book={book} />
           </div>

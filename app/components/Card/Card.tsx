@@ -21,10 +21,10 @@ export default function Card({ book }: any) {
         </p>
         <div className="mb-4">
           <Link
-            to={`author/${book.author.id}`}
+            to={`author/${book.author?.id}`}
             className="inline-flex items-center text-blue-400 hover:underline"
           >
-            {book.author.name}
+            {book.author?.name}
             <svg
               className="w-3 h-3 ms-2.5 rtl:rotate-[270deg]"
               aria-hidden="true"

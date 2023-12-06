@@ -1,49 +1,34 @@
-import {
-  json,
-  redirect,
-  unstable_createMemoryUploadHandler,
-  unstable_parseMultipartFormData,
-} from "@remix-run/node";
-import type { ActionFunctionArgs } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { getBaseURL } from "../api";
-export async function loader() {
-  const response = await fetch(`${getBaseURL()}author`);
-  return json(await response.json());
-}
+import { Form, useLoaderData } from "@remix-run/react";
 
-export async function action({ request }: ActionFunctionArgs) {
-  const uploadHandler = unstable_createMemoryUploadHandler({
-    maxPartSize: 1000000000,
+export async function loader({ params }: { params: { id: string } }) {
+  const book = await fetch(`${getBaseURL()}book/${params.id}`);
+  const authors = await fetch(`${getBaseURL()}author`);
+  return json({ book: await book.json(), authors: await authors.json() });
+}
+export async function action({ request }: any) {
+  const formData = await request.formData();
+  const body = Object.fromEntries(formData.entries());
+  const newBook = await fetch(`${getBaseURL()}book/${body.id}`, {
+    method: "PATCH",
+    body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
-
-  const formData = await unstable_parseMultipartFormData(
-    request,
-    uploadHandler
-  );
-  try {
-    const newBook = await fetch(`${getBaseURL()}book`, {
-      method: "POST",
-      body: formData,
-    });
-    console.log("newBook", newBook);
-    const data = await newBook.json();
-    return redirect(`/book/${data.id}`);
-  } catch (error) {
-    console.error("Error in fetch:", error);
-    throw error; // Re-lanzar el error para que se maneje en otro lugar si es necesario.
-  }
+  const data = await newBook.json();
+  return json(data);
 }
-export default function BookCreate() {
-  const authors = useLoaderData<typeof loader>();
+export default function BookEdit() {
+  const { book, authors } = useLoaderData<typeof loader>();
   return (
     <div className="w-full max-w-2xl m-auto py-4 ">
       <h1 className="text-white text-center text-3xl mb-5">
-        Create a new book
+        Edit {book.title}
       </h1>
       <Form
-        method="post"
-        encType="multipart/form-data"
+        method="PATCH"
         className="bg-white px-8 pt-6 pb-8 mb-4 max-w-xl border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-200 m-auto"
       >
         <div className="mb-6">
@@ -55,6 +40,7 @@ export default function BookCreate() {
           </label>
           <input
             type="text"
+            defaultValue={book.title}
             name="title"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Title"
@@ -69,6 +55,7 @@ export default function BookCreate() {
           </label>
           <textarea
             name="synopsis"
+            defaultValue={book.synopsis}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Synopsis"
           />
@@ -83,6 +70,7 @@ export default function BookCreate() {
           <input
             type="text"
             name="publishedDate"
+            defaultValue={book.publishedDate}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Release date"
           />
@@ -95,8 +83,9 @@ export default function BookCreate() {
             Price
           </label>
           <input
-            type="number"
+            type="text"
             placeholder="Price"
+            defaultValue={book.price}
             name="price"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -113,6 +102,7 @@ export default function BookCreate() {
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-state"
               name="author"
+              defaultValue={book.author?.id}
             >
               <option value="">Anonymous</option>
               {authors.map((author: any) => (
@@ -142,7 +132,6 @@ export default function BookCreate() {
           <input
             className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
             id="frontPage"
-            name="frontPage"
             type="file"
           />
         </div>
