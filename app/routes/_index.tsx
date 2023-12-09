@@ -26,8 +26,10 @@ export default function Index() {
       const newFilteredBooks = books.filter(
         (book: any) => book.author.id === selectedAuthor
       );
-      setFilteredBooks(newFilteredBooks);
+      return setFilteredBooks(newFilteredBooks);
     }
+    setFilteredBooks(books);
+    return () => setFilteredBooks(books);
   }, [selectedAuthor, books]);
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
@@ -36,6 +38,16 @@ export default function Index() {
       </h1>
       <section></section>
       <div className="flex items-center justify-center py-4 md:py-8 flex-wrap">
+        <button
+          onClick={() => setSelectedAuthor("")}
+          className={`mx-5 focus:ring-4 focus:outline-none text-base px-5 py-2.5 rounded-full dark:bg-gray-900 ${
+            !selectedAuthor
+              ? "text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700  focus:ring-blue-300 font-medium text-center mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 "
+              : "text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900  dark:hover:border-gray-700 bg-white  focus:ring-gray-300  font-medium text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
+          }`}
+        >
+          All authors
+        </button>
         {authors.map((author: any) => (
           <button
             key={author.id}

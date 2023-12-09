@@ -26,12 +26,14 @@ export async function action({ request }: ActionFunctionArgs) {
       method: "POST",
       body: formData,
     });
-    console.log("newBook", newBook);
     const data = await newBook.json();
+    if (!data.id) {
+      window.location.reload();
+    }
     return redirect(`/book/${data.id}`);
   } catch (error) {
     console.error("Error in fetch:", error);
-    throw error; // Re-lanzar el error para que se maneje en otro lugar si es necesario.
+    throw error;
   }
 }
 export default function BookCreate() {

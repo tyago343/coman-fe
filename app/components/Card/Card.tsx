@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 
 export default function Card({ book }: any) {
   return (
-    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 m-auto">
+    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 m-auto flex flex-col">
       <Link to={`book/${book.id}`}>
         <img
           className="rounded-t-lg h-80 m-auto mt-3"
@@ -10,7 +10,7 @@ export default function Card({ book }: any) {
           alt="Book cover"
         />
       </Link>
-      <div className="p-5">
+      <div className="p-5 flex-grow">
         <Link to={`book/${book.id}`}>
           <h5 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 dark:text-white underline underline-offset-8">
             {book.title}
