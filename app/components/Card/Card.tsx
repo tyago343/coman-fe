@@ -1,6 +1,7 @@
 import { Link } from "@remix-run/react";
+import type { Book } from "../../models/Book/book.interface";
 
-export default function Card({ book }: any) {
+export default function Card({ book }: { book: Book }) {
   return (
     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 m-auto flex flex-col">
       <Link to={`book/${book.id}`}>
@@ -19,31 +20,34 @@ export default function Card({ book }: any) {
         <p className="mb-3 text-md font-normal text-gray-700 dark:text-gray-400 line-clamp-5">
           {book.synopsis}
         </p>
-        <div className="mb-4">
-          <Link
-            to={`author/${book.author?.id}`}
-            className="inline-flex items-center text-blue-400 hover:underline"
-          >
-            {book.author?.name}
-            <svg
-              className="w-3 h-3 ms-2.5 rtl:rotate-[270deg]"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 18 18"
+        {book.author ? (
+          <div className="mb-4">
+            <Link
+              to={`author/${book.author?.id}`}
+              className="inline-flex items-center text-blue-400 hover:underline"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"
-              />
-            </svg>
-          </Link>
-        </div>
+              {book.author?.name}
+              <svg
+                className="w-3 h-3 ms-2.5 rtl:rotate-[270deg]"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 18 18"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M15 11v4.833A1.166 1.166 0 0 1 13.833 17H2.167A1.167 1.167 0 0 1 1 15.833V4.167A1.166 1.166 0 0 1 2.167 3h4.618m4.447-2H17v5.768M9.111 8.889l7.778-7.778"
+                />
+              </svg>
+            </Link>
+          </div>
+        ) : null}
+
         <Link
-          to={`book/${book.id}`}
+          to={`/book/${book.id}`}
           className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Read more
