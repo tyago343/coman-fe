@@ -1,4 +1,9 @@
-import type { LinksFunction } from "@remix-run/node";
+import {
+  json,
+  redirect,
+  type LinksFunction,
+  type LoaderFunctionArgs,
+} from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -6,12 +11,24 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import styles from "app/tailwind.css";
 import Header from "./components/Header/Header";
 import Sidebar from "./components/Sidebar/Sidebar";
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+export async function loader({ request }: LoaderFunctionArgs) {
+  const cookies = request.headers.get("Cookie") || "";
+  const cookiesArray = cookies.split(";");
+  const tokenCookie = cookiesArray.find((cookie) =>
+    cookie.includes("access_token")
+  );
 
+  // if (!tokenCookie) {
+  //   return redirect("/error");
+  // }
+  return json({});
+}
 export default function App() {
   return (
     <html lang="en">

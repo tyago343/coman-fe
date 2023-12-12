@@ -1,19 +1,21 @@
-import { json, type MetaFunction } from "@remix-run/node";
+import {
+  json,
+  type MetaFunction,
+  type LoaderFunctionArgs,
+} from "@remix-run/node";
 import { getBaseURL } from "../api";
 import { useLoaderData } from "@remix-run/react";
 import Card from "../components/Card/Card";
 import { useEffect, useState } from "react";
-
 export const meta: MetaFunction = () => {
   return [
     { title: "Amazon - Bookshop" },
     { name: "description", content: "Welcome to this new amazon bookshop" },
   ];
 };
-export async function loader() {
+export async function loader({ request }: LoaderFunctionArgs) {
   const books = await fetch(`${getBaseURL()}book`);
   const authors = await fetch(`${getBaseURL()}author`);
-
   return json({ books: await books.json(), authors: await authors.json() });
 }
 

@@ -1,22 +1,39 @@
 import { redirect } from "@remix-run/node";
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { Form, useRouteError } from "@remix-run/react";
 import { getBaseURL } from "../api";
 
 export async function action({ request }: ActionFunctionArgs) {
+  const cookies = request.headers.get("Cookie") || "";
+  const cookiesArray = cookies.split(";");
+  const tokenCookie = cookiesArray.find((cookie) =>
+    cookie.includes("access_token")
+  );
   const formData = await request.formData();
   const body = Object.fromEntries(formData.entries());
-  const newAuthor = await fetch(`${getBaseURL()}author`, {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await newAuthor.json();
-  return redirect(`/author/${data.id}`);
+  try {
+    const newAuthor = await fetch(`${getBaseURL()}author`, {
+      method: "POST",
+      body: JSON.stringify(body),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenCookie?.split("=")[1]}`,
+      },
+    });
+    const data = await newAuthor.json();
+    console.log("aca va la tada", data.statusCode);
+    if (data.statusCode === 401) {
+      return { message: "Cualquiera perro" };
+    }
+    return redirect(`/author/${data.id}`);
+  } catch (e) {
+    throw new Error("Oh no! Something went wrong!");
+  }
 }
 export default function AuthorCreate() {
+  const error = useRouteError();
+  console.log(error);
   return (
     <div className="w-full max-w-xs m-auto py-4 ">
       <h1 className="text-white text-center text-3xl mb-5">

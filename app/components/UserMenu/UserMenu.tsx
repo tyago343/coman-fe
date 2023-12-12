@@ -1,9 +1,11 @@
 import { Link } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
+import { getBaseURL } from "../../api";
 
 export default function UserMenu() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const ref: React.LegacyRef<HTMLDivElement> | null = useRef(null);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -94,6 +96,15 @@ export default function UserMenu() {
               >
                 Sign out
               </Link>
+            </li>
+            <li>
+              <a
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                role="menuitem"
+                href={`${getBaseURL()}auth/login/google`}
+              >
+                Sign in with google
+              </a>
             </li>
           </ul>
         </div>
