@@ -7,6 +7,7 @@ import { getBaseURL } from "../api";
 import { useLoaderData } from "@remix-run/react";
 import Card from "../components/Card/Card";
 import { useEffect, useState } from "react";
+import { getUserFromCookie } from "../utils/user.utils";
 export const meta: MetaFunction = () => {
   return [
     { title: "Amazon - Bookshop" },
@@ -14,9 +15,15 @@ export const meta: MetaFunction = () => {
   ];
 };
 export async function loader({ request }: LoaderFunctionArgs) {
+  const user = getUserFromCookie(request);
   const books = await fetch(`${getBaseURL()}book`);
   const authors = await fetch(`${getBaseURL()}author`);
-  return json({ books: await books.json(), authors: await authors.json() });
+
+  return json({
+    books: await books.json(),
+    authors: await authors.json(),
+    user,
+  });
 }
 
 export default function Index() {
@@ -38,7 +45,6 @@ export default function Index() {
       <h1 className="text-center font-bold text-4xl underline text-white">
         Books
       </h1>
-      <section></section>
       <div className="flex items-center justify-center py-4 md:py-8 flex-wrap">
         <button
           onClick={() => setSelectedAuthor("")}
